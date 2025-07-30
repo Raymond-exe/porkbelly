@@ -1,0 +1,245 @@
+{
+    "frames": [
+        {
+            "filename": "p1_stand",
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_00",
+            "frame": {
+                "x": 0,
+                "y": 30,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_01",
+            "frame": {
+                "x": 44,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_02",
+            "frame": {
+                "x": 44,
+                "y": 30,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_03",
+            "frame": {
+                "x": 0,
+                "y": 60,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_04",
+            "frame": {
+                "x": 44,
+                "y": 60,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_05",
+            "frame": {
+                "x": 0,
+                "y": 90,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_06",
+            "frame": {
+                "x": 44,
+                "y": 90,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_07",
+            "frame": {
+                "x": 88,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_08",
+            "frame": {
+                "x": 88,
+                "y": 30,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        },
+        {
+            "filename": "frame_09",
+            "frame": {
+                "x": 88,
+                "y": 60,
+                "w": 43,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 29
+            }
+        }
+    ],
+    "meta": {
+        "app": "https://www.leshylabs.com/apps/sstool/",
+        "version": "Leshy SpriteSheet Tool v0.8.4",
+        "image": "spritesheet.png",
+        "size": {
+            "w": 131,
+            "h": 119
+        },
+        "scale": 1
+    }
+}

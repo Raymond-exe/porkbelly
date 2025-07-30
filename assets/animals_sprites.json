@@ -1,0 +1,581 @@
+{
+    "frames": [
+        {
+            "filename": "fox",
+            "frame": {
+                "x": 45,
+                "y": 0,
+                "w": 35,
+                "h": 29
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 35,
+                "h": 29
+            },
+            "sourceSize": {
+                "w": 35,
+                "h": 29
+            }
+        },
+        {
+            "filename": "ghast_00",
+            "frame": {
+                "x": 122,
+                "y": 44,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_01",
+            "frame": {
+                "x": 122,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_02",
+            "frame": {
+                "x": 164,
+                "y": 176,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_03",
+            "frame": {
+                "x": 122,
+                "y": 88,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_04",
+            "frame": {
+                "x": 81,
+                "y": 44,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_05",
+            "frame": {
+                "x": 41,
+                "y": 176,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_06",
+            "frame": {
+                "x": 81,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_07",
+            "frame": {
+                "x": 123,
+                "y": 176,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_08",
+            "frame": {
+                "x": 0,
+                "y": 176,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "ghast_09",
+            "frame": {
+                "x": 82,
+                "y": 176,
+                "w": 40,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_00",
+            "frame": {
+                "x": 163,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_01",
+            "frame": {
+                "x": 0,
+                "y": 88,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_02",
+            "frame": {
+                "x": 163,
+                "y": 132,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_03",
+            "frame": {
+                "x": 90,
+                "y": 132,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_04",
+            "frame": {
+                "x": 163,
+                "y": 44,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_05",
+            "frame": {
+                "x": 208,
+                "y": 176,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_06",
+            "frame": {
+                "x": 0,
+                "y": 132,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_07",
+            "frame": {
+                "x": 45,
+                "y": 88,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_08",
+            "frame": {
+                "x": 208,
+                "y": 88,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_09",
+            "frame": {
+                "x": 45,
+                "y": 132,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_10",
+            "frame": {
+                "x": 163,
+                "y": 88,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_11",
+            "frame": {
+                "x": 208,
+                "y": 44,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_12",
+            "frame": {
+                "x": 208,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_13",
+            "frame": {
+                "x": 0,
+                "y": 44,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_14",
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        },
+        {
+            "filename": "panda_15",
+            "frame": {
+                "x": 208,
+                "y": 132,
+                "w": 44,
+                "h": 43
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 44,
+                "h": 43
+            },
+            "sourceSize": {
+                "w": 44,
+                "h": 43
+            }
+        }
+    ],
+    "meta": {
+        "app": "https://www.leshylabs.com/apps/sstool/",
+        "version": "Leshy SpriteSheet Tool v0.8.4",
+        "image": "animals_sprites.png",
+        "size": {
+            "w": 252,
+            "h": 219
+        },
+        "scale": 1
+    }
+}
