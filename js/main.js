@@ -33,9 +33,9 @@ const JUMP_ANIM_THRESHOLD = 250; // time in air to trigger jump animation
 const ANIMAL_LOCATIONS = {
     fox: { x: 6350, y: 300 },
     ghast: { x: 10256, y: 140 },
-    panda: { x: 19550, y: 294 },
+    panda: { x: 19550, y: 270 },
     hammy: { x: 4570, y: 725 },
-    bacon: { x: 21750, y: 800 },
+    bacon: { x: 21770, y: 800 },
     porkchop: { x: 13800, y: 800 },
 }
 
@@ -182,7 +182,7 @@ function create() {
     //     console.log('hello world'); // TODO implement zooming
     // });
 
-    this.add.text(418, 850, 'Run to the party! ->\nInvite anyone you see along the way!', {
+    this.add.text(418, 850, 'Hurry to the party! ->\nInvite anyone you see along the way!', {
         fontFamily: 'Minecraftia',
         fontSize: '8px',
         color: '#FFFFFF',
