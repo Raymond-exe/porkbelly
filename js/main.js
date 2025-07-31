@@ -24,12 +24,15 @@ let config = {
         },
     ],
     pixelArt: true,
+    roundPixels: true,
 };
 
 const WALK_SPEED = 150;
 const JUMP_IMPULSE = 280;
 const JUMP_ANIM_THRESHOLD = 250; // time in air to trigger jump animation
+const INTERACT_DISTANCE = 150;
 
+const PLAYER_SPAWN_LOCATION = { x: 510, y: 940 };
 const ANIMAL_LOCATIONS = {
     fox: { x: 6350, y: 300 },
     ghast: { x: 10256, y: 140 },
@@ -37,6 +40,7 @@ const ANIMAL_LOCATIONS = {
     hammy: { x: 4570, y: 725 },
     bacon: { x: 21770, y: 800 },
     porkchop: { x: 13800, y: 800 },
+    pika: { x: 9400, y: 500 },
 }
 
 const UPDATE_CALLBACKS = [];
@@ -46,12 +50,14 @@ let game = new Phaser.Game(config);
 let map;
 let player;
 let cursors;
+let key = { w: false, a: false, s: false, d: false, space: false };
 let groundLayer, coinLayer, bgLayer, bgLayer2, parallaxLayer;
 let text;
 let score = 0;
 
 let panda, ghast, fox;
 let hammy, bacon, porkchop;
+let pika;
 
 function preload() {
     // map made with Tiled in JSON format
@@ -64,6 +70,7 @@ function preload() {
     // player animations
     this.load.atlas('player', 'assets/player.png', 'assets/player.json');
     this.load.atlas('animals', 'assets/animals_sprites.png', 'assets/animals_sprites.json');
+    this.load.atlas('pika', 'assets/pika.png', 'assets/pika.json');
 }
 
 function preloadHud() {
@@ -86,15 +93,15 @@ function create() {
     // parallaxLayer.setScale(1.5 * 0.9);
     // parallaxLayer.setScrollFactor(0.8);
 
-    bgLayer = map.createDynamicLayer('Background', groundTiles, 0, 0);
+    bgLayer = map.createLayer('Background', groundTiles, 0, 0);
     bgLayer.setScale(1.5);
     bgLayer.forEachTile(tile => tile.tint = 0xEEEEEE);
 
-    bgLayer2 = map.createDynamicLayer('BackgroundProps', groundTiles, 0, 0);
+    bgLayer2 = map.createLayer('BackgroundProps', groundTiles, 0, 0);
     bgLayer2.setScale(1.5);
 
     // create the ground layer
-    groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+    groundLayer = map.createLayer('World', groundTiles, 0, 0);
     // the player will collide with this layer
     groundLayer.setScale(1.5);
     groundLayer.setCollisionByExclusion([-1]);
@@ -102,7 +109,7 @@ function create() {
     // coin image used as tileset
     // let coinTiles = map.addTilesetImage('coin');
     // add coins as tiles
-    coinLayer = map.createDynamicLayer('Coins', groundTiles, 0, 0);
+    coinLayer = map.createLayer('Coins', groundTiles, 0, 0);
     coinLayer.setScale(1.5);
 
     // set the boundaries of our game world
@@ -110,28 +117,31 @@ function create() {
     // this.physics.world.bounds.height = groundLayer.height;
 
     fox = physics.add.sprite(0, 0, 'animals');
-    register('Foxy', fox, ANIMAL_LOCATIONS.fox);
+    register('Foxy', fox, ANIMAL_LOCATIONS.fox, false, ['Oh, hello there Porkbelly', 'How did a pig get up here....?', 'A party?', 'Sure, I can go!', 'I\'ll see you at the party Porkbelly!']);
 
     panda = physics.add.sprite(0, 0, 'animals');
-    register('MacPanda', panda, ANIMAL_LOCATIONS.panda);
+    register('MacPanda', panda, ANIMAL_LOCATIONS.panda, false, ['*sneeze*', 'Oh hi!', 'How did you climb up here?', 'You\'re having a party?', 'Oh, that\'s soon!', 'Yeah I can go to it', 'Thanks for the invite, stinky!']);
 
     ghast = physics.add.sprite(0, 0, 'animals');
-    register('Ghast', ghast, ANIMAL_LOCATIONS.ghast);
+    register('Happy', ghast, ANIMAL_LOCATIONS.ghast, false, [':o   a pig!', 'Hello there pig!', 'Nice to meet you Porkbelly', 'A party later sounds fun!', 'Okay, I\'ll be there!', 'See you at the party, new friend!']);
 
     hammy = physics.add.sprite(0, 0, 'player');
-    register('Hammy', hammy, ANIMAL_LOCATIONS.hammy, true);
+    register('Hammy', hammy, ANIMAL_LOCATIONS.hammy, true, ['Hi Ms. Porkbelly! :D', 'Oh a party later?', 'Sure, I would love to go!', 'You should ask the other pigs too', 'See you at the party!']);
 
     bacon = physics.add.sprite(0, 0, 'player');
-    register('Bacon', bacon, ANIMAL_LOCATIONS.bacon, true);
+    register('Bacon', bacon, ANIMAL_LOCATIONS.bacon, true, ['Oh hi hi!', 'A party? Up the hill?', 'Oh, and it starts soon?', 'I can\'t wait to go!', 'I\'ll see you there Porkbelly!']);
 
     porkchop = physics.add.sprite(0, 0, 'player');
-    register('Porkchop', porkchop, ANIMAL_LOCATIONS.porkchop, true);
+    register('Porkchop', porkchop, ANIMAL_LOCATIONS.porkchop, true, ['Hello Porkbelly!', 'I would love to go to a party, when is it?', 'Oh okay, I can go later today!', 'Thanks for the invite Porkbelly!']);
+
+    pika = physics.add.sprite(0, 0, 'pika');
+    register('Pika', pika, ANIMAL_LOCATIONS.pika, true, ['*woof* thank you for rescuing me! *woof*']);
 
     // create the player sprite    
     player = physics.add.sprite(0, 0, 'player');
     player.setBounce(0.25); // our player will bounce from items
     player.setCollideWorldBounds(false); // don't go out of the map
-    register('Porkbelly', player, { x: 510, y: 940 }, true);
+    register('Porkbelly', player, PLAYER_SPAWN_LOCATION, true);
 
     coinLayer.setTileIndexCallback(32, collectCoin, this);
     // when the player overlaps with a tile with index 9, collectCoin will be called    
@@ -168,12 +178,19 @@ function create() {
 
 
     cursors = this.input.keyboard.createCursorKeys();
+    for (let keybind of Object.keys(key)) {
+        if (keybind.toUpperCase() in Phaser.Input.Keyboard.KeyCodes) {
+            key[keybind] = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[keybind.toUpperCase()]);
+        } else {
+            console.log(`Failed to find keycode for ${keybind}!`);
+        }
+    }
 
     // set bounds so the camera won't go outside the game world
     // this.cameras.main.setBounds(0, 0, 10, 10);
     this.cameras.main.setZoom(3);
     // make the camera follow the player
-    this.cameras.main.startFollow(player, true, 0.1, 0.1);
+    this.cameras.main.startFollow(player, true, 0.05, 0.05, 0, 50);
 
     // set background color, so the sky is not black    
     this.cameras.main.setBackgroundColor('#78A7FF');
@@ -186,23 +203,28 @@ function create() {
         fontFamily: 'Minecraftia',
         fontSize: '8px',
         color: '#FFFFFF',
-        align: 'center'
+        align: 'center',
     });
 
-    function register(name, sprite, location, gravity = false) {
+    function register(name, sprite, location, gravity = false, dialogue = []) {
+        sprite.name = name;
         sprite.setCollideWorldBounds(false);
-        sprite.setScale(1, 1);
+        if (name === 'Pika') {
+            sprite.setScale(0.75, 0.75);
+        } else {
+            sprite.setScale(1, 1);
+        }
         sprite.setPosition(location.x, location.y);
         physics.add.collider(groundLayer, sprite);
         sprite.body.allowGravity = gravity;
         sprite.body.setSize(sprite.width * 0.9, sprite.height * 0.85);
 
-        const nameTag = self.add.text(sprite.x, sprite.y - 50, name, {
+        const nameTag = self.add.text(sprite.x, sprite.y - 30, name, {
             fontFamily: 'Minecraftia',
             fontSize: '8px',
             color: '#FFFFFF',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            padding: { x: 2, y: -2 },
+            padding: { x: 2, y: 1 },
             align: 'center'
         });
         nameTag.setOrigin(0.5);
@@ -210,15 +232,43 @@ function create() {
         UPDATE_CALLBACKS.push(() => {
             if (sprite !== player) {
                 sprite.flipX = (sprite.x > player.x);
+                if (sprite.dialogueText) {
+                    sprite.dialogueText.setPosition(sprite.x, sprite.y - 50);
+                }
             }
             nameTag.setPosition(sprite.x, sprite.y - 30);
         });
+
+        if (dialogue.length > 0) {
+            sprite.setInteractive();
+            sprite.dialogueText = self.add.text(sprite.x, sprite.y - 50, '', {
+                fontFamily: 'Minecraftia',
+                fontSize: '8px',
+                color: '#FFFFFF',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                padding: { x: 6, y: 6 },
+                align: 'center',
+            });
+            sprite.dialogueText.setOrigin(0.5);
+            sprite.dialogueText.setVisible(false);
+            sprite.on('pointerdown', () => {
+                if (distance(sprite, player) > INTERACT_DISTANCE) {
+                    // TODO tell player to move closer
+                    return;
+                }
+                sprite.dialogueText.setVisible(true);
+                const nextLine = dialogue.shift();
+                if (nextLine) {
+                    sprite.dialogueText.setText(nextLine)
+                }
+            });
+        }
     }
 }
 
 function createHud() {
     // this text will show the score
-    text = this.add.text(800, 940, 'Score:  0', {
+    text = this.add.text(800, 940, 'SCORE:  0', {
         fontFamily: 'Minecraftia',
         fontSize: '64px',
         color: '#FFFFFF',
@@ -241,13 +291,13 @@ function update(time, delta) {
     // parallaxLayer.setPosition(this.cameras.main.scrollX * 0.9 + 120, this.cameras.main.scrollY * 0.9 + 60);
 
     let animation = false;
-    if (cursors.left.isDown)
+    if (key.a.isDown || cursors.left.isDown)
     {
         player.body.setVelocityX(-WALK_SPEED);
         animation = 'walk';
         player.flipX = true; // flip the sprite to the left
     }
-    else if (cursors.right.isDown)
+    else if (key.d.isDown || cursors.right.isDown)
     {
         player.body.setVelocityX(WALK_SPEED);
         animation = 'walk';
@@ -257,7 +307,7 @@ function update(time, delta) {
         animation = 'idle';
     }
     // jump 
-    if (cursors.up.isDown && player.body.onFloor())
+    if ((key.w.isDown || key.space.isDown || cursors.up.isDown) && player.body.onFloor())
     {
         player.body.setVelocityY(-JUMP_IMPULSE);
         console.log(`Position: (${Math.round(player.x)}, ${Math.round(player.y)})`);
@@ -274,6 +324,10 @@ function update(time, delta) {
         player.anims.play(animation, true);
     }
 
+    if (player.y > 1200) {
+        player.y = PLAYER_SPAWN_LOCATION.y;
+    }
+
     // animal idle animations
     panda.anims.play('panda_idle', true);
     ghast.anims.play('ghast_idle', true);
@@ -283,4 +337,10 @@ function update(time, delta) {
 
 function updateHud(time, delta) {
 
+}
+
+function distance(spriteA, spriteB) {
+    const dx = spriteA.x - spriteB.x;
+    const dy = spriteA.y - spriteB.y;
+    return Math.sqrt(dx * dx + dy * dy);
 }
