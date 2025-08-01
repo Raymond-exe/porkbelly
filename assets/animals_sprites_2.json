@@ -1,0 +1,98 @@
+{
+    "frames": [
+        {
+            "filename": "bacon",
+            "frame": {
+                "x": 43,
+                "y": 0,
+                "w": 43,
+                "h": 45
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 45
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 45
+            }
+        },
+        {
+            "filename": "hammy",
+            "frame": {
+                "x": 43,
+                "y": 45,
+                "w": 30,
+                "h": 26
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 30,
+                "h": 26
+            },
+            "sourceSize": {
+                "w": 30,
+                "h": 26
+            }
+        },
+        {
+            "filename": "pika",
+            "frame": {
+                "x": 0,
+                "y": 40,
+                "w": 38,
+                "h": 40
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 38,
+                "h": 40
+            },
+            "sourceSize": {
+                "w": 38,
+                "h": 40
+            }
+        },
+        {
+            "filename": "porkchop",
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 40
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 43,
+                "h": 40
+            },
+            "sourceSize": {
+                "w": 43,
+                "h": 40
+            }
+        }
+    ],
+    "meta": {
+        "app": "https://www.leshylabs.com/apps/sstool/",
+        "version": "Leshy SpriteSheet Tool v0.8.4",
+        "image": "animals_sprites_2.png",
+        "size": {
+            "w": 86,
+            "h": 80
+        },
+        "scale": 1
+    }
+}

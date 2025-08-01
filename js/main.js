@@ -37,7 +37,7 @@ const ANIMAL_LOCATIONS = {
     fox: { x: 6350, y: 300 },
     ghast: { x: 10256, y: 140 },
     panda: { x: 19550, y: 270 },
-    hammy: { x: 4570, y: 725 },
+    hammy: { x: 4570, y: 730 },
     bacon: { x: 21770, y: 800 },
     porkchop: { x: 13800, y: 800 },
     pika: { x: 9400, y: 500 },
@@ -70,7 +70,7 @@ function preload() {
     // player animations
     this.load.atlas('player', 'assets/player.png', 'assets/player.json');
     this.load.atlas('animals', 'assets/animals_sprites.png', 'assets/animals_sprites.json');
-    this.load.atlas('pika', 'assets/pika.png', 'assets/pika.json');
+    this.load.atlas('animals_2', 'assets/animals_sprites_2.png', 'assets/animals_sprites_2.json');
 }
 
 function preloadHud() {
@@ -125,16 +125,16 @@ function create() {
     ghast = physics.add.sprite(0, 0, 'animals');
     register('Happy', ghast, ANIMAL_LOCATIONS.ghast, false, [':o   a pig!', 'Hello there pig!', 'Nice to meet you Porkbelly', 'A party later sounds fun!', 'Okay, I\'ll be there!', 'See you at the party, new friend!']);
 
-    hammy = physics.add.sprite(0, 0, 'player');
+    hammy = physics.add.sprite(0, 0, 'animals_2');
     register('Hammy', hammy, ANIMAL_LOCATIONS.hammy, true, ['Hi Ms. Porkbelly! :D', 'Oh a party later?', 'Sure, I would love to go!', 'You should ask the other pigs too', 'See you at the party!']);
 
-    bacon = physics.add.sprite(0, 0, 'player');
+    bacon = physics.add.sprite(0, 0, 'animals_2');
     register('Bacon', bacon, ANIMAL_LOCATIONS.bacon, true, ['Oh hi hi!', 'A party? Up the hill?', 'Oh, and it starts soon?', 'I can\'t wait to go!', 'I\'ll see you there Porkbelly!']);
 
-    porkchop = physics.add.sprite(0, 0, 'player');
+    porkchop = physics.add.sprite(0, 0, 'animals_2');
     register('Porkchop', porkchop, ANIMAL_LOCATIONS.porkchop, true, ['Hello Porkbelly!', 'I would love to go to a party, when is it?', 'Oh okay, I can go later today!', 'Thanks for the invite Porkbelly!']);
 
-    pika = physics.add.sprite(0, 0, 'pika');
+    pika = physics.add.sprite(0, 0, 'animals_2');
     register('Pika', pika, ANIMAL_LOCATIONS.pika, true, ['*woof* thank you for rescuing me! *woof*']);
 
     // create the player sprite    
@@ -174,7 +174,13 @@ function create() {
         key: 'ghast_idle',
         frames: this.anims.generateFrameNames('animals', {prefix: 'ghast_', start: 0, end: 9, zeroPad: 2}),
         frameRate: 10,
-    })
+    });
+    ['pika', 'hammy', 'porkchop', 'bacon'].forEach(name => {
+        this.anims.create({
+            key: name,
+            frames: [{key: 'animals_2', frame: name}],
+        });
+    });
 
 
     cursors = this.input.keyboard.createCursorKeys();
@@ -190,7 +196,7 @@ function create() {
     // this.cameras.main.setBounds(0, 0, 10, 10);
     this.cameras.main.setZoom(3);
     // make the camera follow the player
-    this.cameras.main.startFollow(player, true, 0.05, 0.05, 0, 50);
+    this.cameras.main.startFollow(player, true, 0.05, 0.05, 0, 30);
 
     // set background color, so the sky is not black    
     this.cameras.main.setBackgroundColor('#78A7FF');
@@ -217,7 +223,17 @@ function create() {
         sprite.setPosition(location.x, location.y);
         physics.add.collider(groundLayer, sprite);
         sprite.body.allowGravity = gravity;
-        sprite.body.setSize(sprite.width * 0.9, sprite.height * 0.85);
+        if (name === 'Hammy') {
+            sprite.body.setSize(sprite.width * 0.1, sprite.height * 0.1);
+        } else if (name === 'Bacon') {
+            sprite.body.setSize(sprite.width * 0.5, sprite.height * 0.575);
+        } else if (name === 'Porkchop') {
+            sprite.body.setSize(sprite.width * 0.5, sprite.height * 0.5);
+        } else if (name === 'Pika') {
+            sprite.body.setSize(sprite.width * 0.9, sprite.height * 0.75);
+        } else {
+            sprite.body.setSize(sprite.width * 0.9, sprite.height * 0.9);
+        }
 
         const nameTag = self.add.text(sprite.x, sprite.y - 30, name, {
             fontFamily: 'Minecraftia',
@@ -331,6 +347,10 @@ function update(time, delta) {
     // animal idle animations
     panda.anims.play('panda_idle', true);
     ghast.anims.play('ghast_idle', true);
+    hammy.anims.play('hammy', false);
+    bacon.anims.play('bacon', false);
+    porkchop.anims.play('porkchop', false);
+    pika.anims.play('pika', false);
 
     UPDATE_CALLBACKS.forEach(callback => callback());
 }
