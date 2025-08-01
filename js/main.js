@@ -40,7 +40,7 @@ let max_invited_guests = 0;
 
 const AUDIO_FILES = [];
 const MUSIC_VOLUME = 0.5;
-const SFX_VOLUME = 0.075;
+const SFX_VOLUME = 0.09;
 const TULIP_VOLUME = 0.04;
 const DIALOGUE_VOLUME = 1.0;
 
