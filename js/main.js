@@ -190,8 +190,9 @@ function create() {
     // load sounds
     for (let file of Object.keys(SOUNDS)) {
         const isMusc = (file === 'cave' || file === 'desert' || file === 'forest' || file === 'plains');
-        const volume = SOUNDS[file].volume
-        SOUNDS[file] = self.sound.add(file, { loop: isMusc, volume: volume });
+        const volume = SOUNDS[file].volume;
+        SOUNDS[file] = self.sound.add(file, { loop: isMusc});
+        SOUNDS[file].setVolume(volume);
     }
 
     fox = physics.add.sprite(0, 0, 'animals');
