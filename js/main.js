@@ -132,12 +132,12 @@ function preload() {
 
     AUDIO_FILES.forEach(filepath => {
         const name = filepath.split('/').pop().split('.').shift();
-        SOUNDS[name] = this.load.audio(name, filepath);
+        SOUNDS[name] = { audio: this.load.audio(name, filepath) };
         let volume = SFX_VOLUME;
         if (name.startsWith('fox') || name.startsWith('ghast') || name.startsWith('panda') || name.startsWith('pig')) {
             volume = DIALOGUE_VOLUME;
         }
-        if (name === 'fox' || name === 'ghast' || name === 'panda' || name === 'pig') {
+        if (name === 'cave' || name === 'desert' || name === 'forest' || name === 'plains' || name === 'plains') {
             volume = MUSIC_VOLUME;
         }
         SOUNDS[name].volume = volume;
@@ -189,11 +189,9 @@ function create() {
 
     // load sounds
     for (let file of Object.keys(SOUNDS)) {
-        if (file === 'cave' || file === 'desert' || file === 'forest' || file === 'plains') {
-            SOUNDS[file] = self.sound.add(file, { loop: true, volume: MUSIC_VOLUME });
-        } else {
-            SOUNDS[file] = self.sound.add(file, { loop: false, volume: SOUNDS[file].volume });
-        }
+        const isMusc = (file === 'cave' || file === 'desert' || file === 'forest' || file === 'plains');
+        const volume = SOUNDS[file].volume
+        SOUNDS[file] = self.sound.add(file, { loop: isMusc, volume: volume });
     }
 
     fox = physics.add.sprite(0, 0, 'animals');
