@@ -40,7 +40,7 @@ let max_invited_guests = 0;
 
 const AUDIO_FILES = [];
 const MUSIC_VOLUME = 0.5;
-const SFX_VOLUME = 0.1;
+const SFX_VOLUME = 0.05;
 const DIALOGUE_VOLUME = 1.0;
 
 // load files from assets/sounds/animals/*
@@ -477,6 +477,7 @@ function create() {
         const firework = self.add.sprite(x, y, 'firework_spritesheet');
         firework.anims.play('firework_anim', false);
         firework.on('animationcomplete', () => firework.destroy());
+        SOUNDS.firework.setVolume(Math.random());
         if (sound) SOUNDS.firework.play();
     }
 
