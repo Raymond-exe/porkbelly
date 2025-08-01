@@ -91,6 +91,7 @@ Clarisse R
 
 QA TESTING
 Alea E
+Marcus C
 
 MUSIC + SFX
 Mojang/Minecraft
