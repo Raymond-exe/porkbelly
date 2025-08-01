@@ -340,12 +340,19 @@ function create() {
     });
 
     createZoneInteraction(23250, 300, 200, () => {
-        musictrack.stop();
+        if (musictrack) {
+            musictrack.stop();
+        }
         SOUNDS.party.play();
         setMainText('Happy birthday bby!');
+
+        const jumping = [];
         INVITED.forEach(animal => {
             self.time.delayedCall(Math.random() * 1000, () => {
                 animal.dialogueText.setText('Happy Birthday Alexia!');
+                if (animal.body.allowGravity) {
+                    jumping.push(animal);
+                }
             });
         });
         for (let i = 0; i < 4000; i++) {
@@ -353,6 +360,14 @@ function create() {
                 spawnFirework(player.x + (Math.random() * 500) - 250, player.y - Math.random() * 300, false);
             }, [], this);
         }
+
+        UPDATE_CALLBACKS.push(() => {
+            jumping.forEach(animal => {
+                if (animal.body.onFloor()) {
+                    animal.body.setVelocityY(-JUMP_IMPULSE / (1.25 + Math.random() / 2));
+                }
+            });
+        });
 
         showCredits();
     });
