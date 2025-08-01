@@ -31,6 +31,9 @@ const WALK_SPEED = 150;
 const JUMP_IMPULSE = 280;
 const JUMP_ANIM_THRESHOLD = 250; // time in air to trigger jump animation
 const INTERACT_DISTANCE = 150;
+const ZONES = [];
+const INVITED = [];
+let max_invited_guests = 0;
 
 const PLAYER_SPAWN_LOCATION = { x: 510, y: 940 };
 const ANIMAL_LOCATIONS = {
@@ -52,8 +55,9 @@ let player;
 let cursors;
 let key = { w: false, a: false, s: false, d: false, space: false };
 let groundLayer, coinLayer, bgLayer, bgLayer2, parallaxLayer;
-let text;
+let scoreText, stageText, mainText;
 let score = 0;
+let hud;
 
 let panda, ghast, fox;
 let hammy, bacon, porkchop;
@@ -119,24 +123,31 @@ function create() {
 
     fox = physics.add.sprite(0, 0, 'animals');
     register('Foxy', fox, ANIMAL_LOCATIONS.fox, false, ['Oh, hello there Porkbelly', 'How did a pig get up here....?', 'A party?', 'Sure, I can go!', 'I\'ll see you at the party Porkbelly!']);
+    fox.partyLocation = {x: 23265, y: 250};
 
     panda = physics.add.sprite(0, 0, 'animals');
     register('MacPanda', panda, ANIMAL_LOCATIONS.panda, false, ['*sneeze*', 'Oh hi!', 'How did you climb up here?', 'You\'re having a party?', 'Oh, that\'s soon!', 'Yeah I can go to it', 'Thanks for the invite, stinky!']);
+    panda.partyLocation = {x: 23230, y: 290};
 
     ghast = physics.add.sprite(0, 0, 'animals');
     register('Happy', ghast, ANIMAL_LOCATIONS.ghast, false, [':o   a pig!', 'Hello there pig!', 'Nice to meet you Porkbelly', 'A party later sounds fun!', 'Okay, I\'ll be there!', 'See you at the party, new friend!']);
+    ghast.partyLocation = {x: 23055, y: 235};
 
     hammy = physics.add.sprite(0, 0, 'animals_2');
     register('Hammy', hammy, ANIMAL_LOCATIONS.hammy, true, ['Hi Ms. Porkbelly! :D', 'Oh a party later?', 'Sure, I would love to go!', 'You should ask the other pigs too', 'See you at the party!']);
+    hammy.partyLocation = {x: 23040, y: 290};
 
     bacon = physics.add.sprite(0, 0, 'animals_2');
     register('Bacon', bacon, ANIMAL_LOCATIONS.bacon, true, ['Oh hi hi!', 'A party? Up the hill?', 'Oh, and it starts soon?', 'I can\'t wait to go!', 'I\'ll see you there Porkbelly!']);
+    bacon.partyLocation = {x: 23088, y: 290};
 
     porkchop = physics.add.sprite(0, 0, 'animals_2');
     register('Porkchop', porkchop, ANIMAL_LOCATIONS.porkchop, true, ['Hello Porkbelly!', 'I would love to go to a party, when is it?', 'Oh okay, I can go later today!', 'Thanks for the invite Porkbelly!']);
+    porkchop.partyLocation = {x: 23190, y: 290};
 
     pika = physics.add.sprite(0, 0, 'animals_2');
     register('Pika', pika, ANIMAL_LOCATIONS.pika, true, ['*woof* thank you for rescuing me! *woof*']);
+    pika.partyLocation = {x: 23133, y: 290};
 
     // create the player sprite    
     player = physics.add.sprite(0, 0, 'player');
@@ -198,6 +209,54 @@ function create() {
         }
     }
 
+    // create interaction zones
+    createZoneInteraction(2000, 720, 50, () => setStageText('Stage 1: The Forest'));
+    createZoneInteraction(6500, 900, 50, () => setStageText('Stage 2: The Caves'));
+    createZoneInteraction(12100, 700, 50, () => setStageText('Stage 3: The Desert'));
+    createZoneInteraction(16300, 730, 50, () => setStageText('Stage 4: The Plains'));
+
+    createZoneInteraction(6130, 827, 100, player => {
+        setMainText('Stage  1  Complete!')
+        for (let i = 0; i < 20; i++) {
+            this.time.delayedCall(i * 250, () => spawnFirework(player.x + (Math.random() * 150) - 75, player.y - Math.random() * 100), [], this);
+        }
+    });
+    createZoneInteraction(11500, 730, 100, player => {
+        setMainText('Stage  2  Complete!')
+        for (let i = 0; i < 20; i++) {
+            this.time.delayedCall(i * 250, () => spawnFirework(player.x + (Math.random() * 150) - 75, player.y - Math.random() * 100), [], this);
+        }
+    });
+    createZoneInteraction(16000, 707, 100, player => {
+        setMainText('Stage  3  Complete!')
+        for (let i = 0; i < 20; i++) {
+            this.time.delayedCall(i * 250, () => spawnFirework(player.x + (Math.random() * 150) - 75, player.y - Math.random() * 100), [], this);
+        }
+    });
+
+    createZoneInteraction(22400, 467, 200, () => {
+        INVITED.forEach(animal => {
+            animal.x = animal.partyLocation.x;
+            animal.y = animal.partyLocation.y;
+            animal.dialogueText.setText('');
+        });
+    });
+
+    createZoneInteraction(23250, 300, 200, () => {
+        setMainText('Happy birthday bby!');
+        INVITED.forEach(animal => {
+            self.time.delayedCall(Math.random() * 1000, () => {
+                animal.dialogueText.setText('Happy Birthday Alexia!');
+            });
+        });
+        for (let i = 0; i < 4000; i++) {
+            self.time.delayedCall(i * 100, () => {
+                spawnFirework(player.x + (Math.random() * 500) - 250, player.y - Math.random() * 300);
+            }, [], this);
+        }
+    });
+
+
     // set bounds so the camera won't go outside the game world
     // this.cameras.main.setBounds(0, 0, 10, 10);
     this.cameras.main.setZoom(3);
@@ -216,7 +275,14 @@ function create() {
         fontSize: '8px',
         color: '#FFFFFF',
         align: 'center',
-    });
+    }).setShadow(0, 0, '#000000', 2, true, true);
+
+    this.add.text(4570, 770, 'Click on other animals to\ninvite them to the party!', {
+        fontFamily: 'Minecraftia',
+        fontSize: '8px',
+        color: '#FFFFFF',
+        align: 'center',
+    }).setShadow(0, 0, '#000000', 2, true, true).setOrigin(0.5);
 
     function register(name, sprite, location, gravity = false, dialogue = []) {
         sprite.name = name;
@@ -275,37 +341,133 @@ function create() {
             sprite.dialogueText.setVisible(false);
             sprite.on('pointerdown', () => {
                 if (distance(sprite, player) > INTERACT_DISTANCE) {
-                    // TODO tell player to move closer
+                    setStageText(`Move closer to talk to ${name}`);
                     return;
                 }
                 sprite.dialogueText.setVisible(true);
+
+                if (dialogue.length <= 0) {
+                    return;
+                }
+
                 const nextLine = dialogue.shift();
-                if (nextLine) {
-                    sprite.dialogueText.setText(nextLine)
+                sprite.dialogueText.setText(nextLine);
+                if (dialogue.length <= 0) {
+                    INVITED.push(sprite);
+                    setStageText(`${INVITED.length}/${max_invited_guests} guests invited!`);
                 }
             });
         }
+
+        if (sprite !== player) {
+            max_invited_guests++;
+        }
+    }
+
+    function createZoneInteraction(x, y, radius, callback) {
+        ZONES.push({x, y, radius, callback, isInside: (sprite) => (distance(sprite, {x, y}) <= radius)});
+    }
+
+    function spawnFirework(x, y) {
+        const firework = self.add.sprite(x, y, 'firework_spritesheet');
+        firework.anims.play('firework_anim', false);
+        firework.on('animationcomplete', () => firework.destroy());
     }
 }
 
 function createHud() {
-    // this text will show the score
-    text = this.add.text(800, 940, 'SCORE:  0', {
+    hud = this;
+
+    //  scoreText will show the score
+    scoreText = this.add.text(1480, 60, 'SCORE:  0', {
         fontFamily: 'Minecraftia',
         fontSize: '64px',
         color: '#FFFFFF',
-        align: 'center'
+        align: 'right',
     });
-    // fix the text to the camera
-    text.setScrollFactor(0);
+
+    stageText = this.add.text(100, 60, '', {
+        fontFamily: 'Minecraftia',
+        fontSize: '64px',
+        color: '#FFFFFF',
+        align: 'left',
+    });
+
+    mainText = this.add.text(config.width * 0.5, config.height * 0.75, '', {
+        fontFamily: 'Minecraftia',
+        fontSize: '128px',
+        color: '#FFFFFF',
+        align: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        padding: { x: 1000, y: 25 },
+    });
+    mainText.setOrigin(0.5);
+    mainText.alpha = 0;
+
+    scoreText.setShadow(8, 8, '#000000', 2, true, true);
+    stageText.setShadow(8, 8, '#000000', 2, true, true);
+
+
+    // fix all text to the camera
+    scoreText.setScrollFactor(0);
+    stageText.setScrollFactor(0);
 }
 
 // this function will be called when the player touches a coin
 function collectCoin(sprite, tile) {
     coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
     score++; // add 10 points to the score
-    text.setText(`SCORE:  ${score}`); // set the text to show the current score
+    scoreText.setText(`SCORE:  ${score}`); // set the scoreText to show the current score
     return false;
+}
+
+function setStageText(text) {
+    const letters = text.split('');
+    const shownText = [];
+    for (let i = 0; i < letters.length; i++) {
+        hud.time.delayedCall(i * 100, () => {
+            shownText.push(letters[i]);
+            stageText.setText(shownText.join(''));
+        }, [], this);
+    }
+
+    hud.time.delayedCall(letters.length * 100 + 3000, () => {
+        hud.tweens.add({
+            targets: stageText,
+            alpha: 0,
+            duration: 2000,
+            ease: 'Linear',
+            onComplete: () => {
+                stageText.setText('');
+                stageText.alpha = 1;
+            }
+        });
+    });
+}
+
+
+function setMainText(text) {
+    mainText.alpha = 1;
+    const letters = text.split('');
+    const shownText = [];
+    for (let i = 0; i < letters.length; i++) {
+        hud.time.delayedCall(i * 100, () => {
+            shownText.push(letters[i]);
+            mainText.setText(shownText.join(''));
+        }, [], this);
+    }
+
+    hud.time.delayedCall(letters.length * 100 + 2000, () => {
+        hud.tweens.add({
+            targets: mainText,
+            alpha: 0,
+            duration: 1000,
+            ease: 'Linear',
+            onComplete: () => {
+                mainText.setText('');
+            }
+        });
+    });
 }
 
 let lastTimeOnFloor = false;
@@ -314,6 +476,7 @@ function update(time, delta) {
     // parallaxLayer.setPosition(this.cameras.main.scrollX * 0.9 + 120, this.cameras.main.scrollY * 0.9 + 60);
 
     let animation = false;
+    // L/R movement
     if (key.a.isDown || cursors.left.isDown)
     {
         player.body.setVelocityX(-WALK_SPEED);
@@ -334,20 +497,27 @@ function update(time, delta) {
     {
         player.body.setVelocityY(-JUMP_IMPULSE);
     }
+
+    // animation logic
     if (player.body.onFloor()) {
         lastTimeOnFloor = time;
     }
-
     if (time - lastTimeOnFloor >= JUMP_ANIM_THRESHOLD) {
         animation = 'jump';
     }
-
     if (animation) {
         player.anims.play(animation, true);
     }
 
+    // catch, in case player falls
     if (player.y > 1200) {
         player.y = PLAYER_SPAWN_LOCATION.y;
+    }
+
+
+    // for debugging
+    if (cursors.down.isDown) {
+        console.log(`(${Math.round(player.x * 10) / 10}, ${Math.round(player.y * 10) / 10})`);
     }
 
     // animal idle animations
@@ -358,14 +528,14 @@ function update(time, delta) {
     porkchop.anims.play('porkchop', false);
     pika.anims.play('pika', false);
 
+    ZONES.forEach(zone => {
+        if (!zone.activated && zone.isInside(player)) {
+            zone.callback(player);
+            zone.activated = true;
+        }
+    });
+
     UPDATE_CALLBACKS.forEach(callback => callback());
-
-
-    function spawnFirework(x, y) {
-        const firework = self.add.sprite(x, y, 'firework_spritesheet');
-        firework.anims.play('firework_anim', false);
-        firework.on('animationcomplete', () => firework.destroy());
-    }
 }
 
 function updateHud(time, delta) {
