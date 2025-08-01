@@ -340,17 +340,17 @@ function create() {
 
     this.add.text(418, 850, 'Hurry to the party! ->\nInvite anyone you see along the way!', {
         fontFamily: 'Minecraftia',
-        fontSize: '8px',
+        fontSize: '32px',
         color: '#FFFFFF',
         align: 'center',
-    }).setShadow(0, 0, '#000000', 2, true, true);
+    }).setShadow(0, 0, '#000000', 8, true, true).setScale(0.25);
 
     this.add.text(4570, 770, 'Click on other animals to\ninvite them to the party!', {
         fontFamily: 'Minecraftia',
-        fontSize: '8px',
+        fontSize: '32px',
         color: '#FFFFFF',
         align: 'center',
-    }).setShadow(0, 0, '#000000', 2, true, true).setOrigin(0.5);
+    }).setShadow(0, 0, '#000000', 8, true, true).setOrigin(0.5).setScale(0.25);
 
     function register(name, sprite, location, gravity = false, dialogue = []) {
         sprite.name = name;
@@ -377,13 +377,14 @@ function create() {
 
         const nameTag = self.add.text(sprite.x, sprite.y - 30, name, {
             fontFamily: 'Minecraftia',
-            fontSize: '8px',
+            fontSize: '32px',
             color: '#FFFFFF',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            padding: { x: 2, y: 1 },
+            padding: { x: 8, y: 4 },
             align: 'center'
         });
         nameTag.setOrigin(0.5);
+        nameTag.setScale(0.25);
 
         UPDATE_CALLBACKS.push(() => {
             if (sprite !== player) {
@@ -399,13 +400,14 @@ function create() {
             sprite.setInteractive();
             sprite.dialogueText = self.add.text(sprite.x, sprite.y - 50, '', {
                 fontFamily: 'Minecraftia',
-                fontSize: '8px',
+                fontSize: '32px',
                 color: '#FFFFFF',
                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                padding: { x: 6, y: 6 },
+                padding: { x: 6 * 4, y: 6 * 4 },
                 align: 'center',
             });
             sprite.dialogueText.setOrigin(0.5);
+            sprite.dialogueText.setScale(0.25);
             sprite.dialogueText.setVisible(false);
             sprite.on('pointerdown', () => {
                 if (distance(sprite, player) > INTERACT_DISTANCE) {
