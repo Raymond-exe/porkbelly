@@ -39,6 +39,9 @@ let musictrack = false;
 let max_invited_guests = 0;
 
 const AUDIO_FILES = [];
+const MUSIC_VOLUME = 0.5;
+const SFX_VOLUME = 0.75;
+const DIALOGUE_VOLUME = 1.0;
 
 // load files from assets/sounds/animals/*
 for (let i = 1; i <= 4; i++) {
@@ -76,6 +79,26 @@ const ANIMAL_LOCATIONS = {
     pika: { x: 9400, y: 500 },
 }
 
+const CREDITS_TEXT = `[CREDITS]
+
+PROGRAMMING
+Raymond W
+
+PIXEL ART
+Martin Wörister
+Clarisse R
+
+QA TESTING
+Alea E
+
+MUSIC + SFX
+Mojang/Minecraft
+Saja Boys
+
+Powered by
+PHASER.io
+`;
+
 const UPDATE_CALLBACKS = [];
 
 let game = new Phaser.Game(config);
@@ -85,7 +108,7 @@ let player;
 let cursors;
 let key = { w: false, a: false, s: false, d: false, space: false };
 let groundLayer, coinLayer, bgLayer, bgLayer2, parallaxLayer;
-let scoreText, stageText, mainText;
+let scoreText, stageText, mainText, credits;
 let score = 0;
 let hud;
 
@@ -110,6 +133,14 @@ function preload() {
     AUDIO_FILES.forEach(filepath => {
         const name = filepath.split('/').pop().split('.').shift();
         SOUNDS[name] = this.load.audio(name, filepath);
+        let volume = SFX_VOLUME;
+        if (name.startsWith('fox') || name.startsWith('ghast') || name.startsWith('panda') || name.startsWith('pig')) {
+            volume = DIALOGUE_VOLUME;
+        }
+        if (name === 'fox' || name === 'ghast' || name === 'panda' || name === 'pig') {
+            volume = MUSIC_VOLUME;
+        }
+        SOUNDS[name].volume = volume;
     })
 }
 
@@ -159,9 +190,9 @@ function create() {
     // load sounds
     for (let file of Object.keys(SOUNDS)) {
         if (file === 'cave' || file === 'desert' || file === 'forest' || file === 'plains') {
-            SOUNDS[file] = self.sound.add(file, { loop: true, volume: 1 });
+            SOUNDS[file] = self.sound.add(file, { loop: true, volume: MUSIC_VOLUME });
         } else {
-            SOUNDS[file] = self.sound.add(file);
+            SOUNDS[file] = self.sound.add(file, { loop: false, volume: SOUNDS[file].volume });
         }
     }
 
@@ -319,9 +350,11 @@ function create() {
         });
         for (let i = 0; i < 4000; i++) {
             self.time.delayedCall(i * 100, () => {
-                spawnFirework(player.x + (Math.random() * 500) - 250, player.y - Math.random() * 300);
+                spawnFirework(player.x + (Math.random() * 500) - 250, player.y - Math.random() * 300, false);
             }, [], this);
         }
+
+        showCredits();
     });
 
 
@@ -441,11 +474,11 @@ function create() {
         ZONES.push({x, y, radius, callback, isInside: (sprite) => (distance(sprite, {x, y}) <= radius)});
     }
 
-    function spawnFirework(x, y) {
+    function spawnFirework(x, y, sound = true) {
         const firework = self.add.sprite(x, y, 'firework_spritesheet');
         firework.anims.play('firework_anim', false);
         firework.on('animationcomplete', () => firework.destroy());
-        SOUNDS.firework.play();
+        if (sound) SOUNDS.firework.play();
     }
 
     function setTrack(soundtrack) {
@@ -499,13 +532,24 @@ function createHud() {
     mainText.setOrigin(0.5);
     mainText.alpha = 0;
 
+    credits = this.add.text(config.width - 250, config.height * 0.5 + 100, CREDITS_TEXT, {
+        fontFamily: 'Minecraftia',
+        fontSize: '32px',
+        color: '#FFFFFF',
+        align: 'right',
+    });
+    credits.setOrigin(0.5);
+    credits.alpha = 0;
+
     scoreText.setShadow(8, 8, '#000000', 2, true, true);
     stageText.setShadow(8, 8, '#000000', 2, true, true);
+    credits.setShadow(0, 0, '#000000', 10, true, true);
 
 
     // fix all text to the camera
     scoreText.setScrollFactor(0);
     stageText.setScrollFactor(0);
+    credits.setScrollFactor(0);
 }
 
 // this function will be called when the player touches a coin
@@ -562,6 +606,17 @@ function setMainText(text) {
             onComplete: () => {
                 mainText.setText('');
             }
+        });
+    });
+}
+
+function showCredits() {
+    hud.time.delayedCall(5000, () => {
+        hud.tweens.add({
+            targets: credits,
+            alpha: 1,
+            duration: 2000,
+            ease: 'Linear',
         });
     });
 }
