@@ -39,8 +39,8 @@ let musictrack = false;
 let max_invited_guests = 0;
 
 const AUDIO_FILES = [];
-const MUSIC_VOLUME = 0.4;
-const SFX_VOLUME = 0.5;
+const MUSIC_VOLUME = 0.5;
+const SFX_VOLUME = 0.25;
 const DIALOGUE_VOLUME = 1.0;
 
 // load files from assets/sounds/animals/*
