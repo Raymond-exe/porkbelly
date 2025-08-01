@@ -40,7 +40,8 @@ let max_invited_guests = 0;
 
 const AUDIO_FILES = [];
 const MUSIC_VOLUME = 0.5;
-const SFX_VOLUME = 0.05;
+const SFX_VOLUME = 0.075;
+const TULIP_VOLUME = 0.04;
 const DIALOGUE_VOLUME = 1.0;
 
 // load files from assets/sounds/animals/*
@@ -236,8 +237,8 @@ function create() {
     player.setCollideWorldBounds(false); // don't go out of the map
     register('Porkbelly', player, PLAYER_SPAWN_LOCATION, true);
 
-    coinLayer.setTileIndexCallback(32, collectCoin, this);
-    // when the player overlaps with a tile with index 9, collectCoin will be called    
+    coinLayer.setTileIndexCallback(32, collectTulip, this);
+    // when the player overlaps with a tile with index 9, collectTulip will be called    
     physics.add.overlap(player, coinLayer);
 
     // player walk animation
@@ -553,10 +554,11 @@ function createHud() {
 }
 
 // this function will be called when the player touches a coin
-function collectCoin(sprite, tile) {
+function collectTulip(sprite, tile) {
     coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
     score++; // add 10 points to the score
     scoreText.setText(`SCORE:  ${score}`); // set the scoreText to show the current score
+    SOUNDS.tulip.setVolume(TULIP_VOLUME);
     SOUNDS.tulip.play();
     return false;
 }
