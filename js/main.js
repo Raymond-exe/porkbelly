@@ -30,10 +30,40 @@ let config = {
 const WALK_SPEED = 150;
 const JUMP_IMPULSE = 280;
 const JUMP_ANIM_THRESHOLD = 250; // time in air to trigger jump animation
+const FOOTSTEP_THRESHOLD = 250; // time between footstep sounds
 const INTERACT_DISTANCE = 150;
 const ZONES = [];
 const INVITED = [];
+const SOUNDS = {};
+let musictrack = false;
 let max_invited_guests = 0;
+
+const AUDIO_FILES = [];
+
+// load files from assets/sounds/animals/*
+for (let i = 1; i <= 4; i++) {
+    ['fox', 'ghast', 'panda'].forEach(animal => {
+        AUDIO_FILES.push(`assets/sounds/animals/${animal}${i}.ogg`);
+    });
+    if (i < 4) {
+        AUDIO_FILES.push(`assets/sounds/animals/pig${i}.ogg`);
+    }
+}
+
+// load music files
+['cave', 'desert', 'forest', 'plains', 'party'].forEach(land => {
+    AUDIO_FILES.push(`assets/sounds/music/${land}.ogg`);
+});
+
+// steps
+for (let i = 1; i <= 5; i++) {
+    AUDIO_FILES.push(`assets/sounds/step${i}.ogg`);
+}
+
+// remaining audio files
+['firework', 'stage_complete', 'tulip'].forEach(file => {
+    AUDIO_FILES.push(`assets/sounds/${file}.ogg`);
+})
 
 const PLAYER_SPAWN_LOCATION = { x: 510, y: 940 };
 const ANIMAL_LOCATIONS = {
@@ -76,6 +106,11 @@ function preload() {
     this.load.atlas('animals', 'assets/animals_sprites.png', 'assets/animals_sprites.json');
     this.load.atlas('animals_2', 'assets/animals_sprites_2.png', 'assets/animals_sprites_2.json');
     this.load.atlas('firework_spritesheet', 'assets/firework_spritesheet.png', 'assets/firework_sprites.json')
+
+    AUDIO_FILES.forEach(filepath => {
+        const name = filepath.split('/').pop().split('.').shift();
+        SOUNDS[name] = this.load.audio(name, filepath);
+    })
 }
 
 function preloadHud() {
@@ -121,31 +156,47 @@ function create() {
     // this.physics.world.bounds.width = groundLayer.width;
     // this.physics.world.bounds.height = groundLayer.height;
 
+    // load sounds
+    for (let file of Object.keys(SOUNDS)) {
+        if (file === 'cave' || file === 'desert' || file === 'forest' || file === 'plains') {
+            SOUNDS[file] = self.sound.add(file, { loop: true, volume: 1 });
+        } else {
+            SOUNDS[file] = self.sound.add(file);
+        }
+    }
+
     fox = physics.add.sprite(0, 0, 'animals');
+    fox.sounds = [SOUNDS.fox1, SOUNDS.fox2, SOUNDS.fox3, SOUNDS.fox4];
     register('Foxy', fox, ANIMAL_LOCATIONS.fox, false, ['Oh, hello there Porkbelly', 'How did a pig get up here....?', 'A party?', 'Sure, I can go!', 'I\'ll see you at the party Porkbelly!']);
     fox.partyLocation = {x: 23265, y: 250};
 
     panda = physics.add.sprite(0, 0, 'animals');
+    panda.sounds = [SOUNDS.panda1, SOUNDS.panda2, SOUNDS.panda3, SOUNDS.panda4];
     register('MacPanda', panda, ANIMAL_LOCATIONS.panda, false, ['*sneeze*', 'Oh hi!', 'How did you climb up here?', 'You\'re having a party?', 'Oh, that\'s soon!', 'Yeah I can go to it', 'Thanks for the invite, stinky!']);
     panda.partyLocation = {x: 23230, y: 290};
 
     ghast = physics.add.sprite(0, 0, 'animals');
+    ghast.sounds = [SOUNDS.ghast1, SOUNDS.ghast2, SOUNDS.ghast3, SOUNDS.ghast4];
     register('Happy', ghast, ANIMAL_LOCATIONS.ghast, false, [':o   a pig!', 'Hello there pig!', 'Nice to meet you Porkbelly', 'A party later sounds fun!', 'Okay, I\'ll be there!', 'See you at the party, new friend!']);
     ghast.partyLocation = {x: 23055, y: 235};
 
     hammy = physics.add.sprite(0, 0, 'animals_2');
+    hammy.sounds = [SOUNDS.pig1, SOUNDS.pig2, SOUNDS.pig3];
     register('Hammy', hammy, ANIMAL_LOCATIONS.hammy, true, ['Hi Ms. Porkbelly! :D', 'Oh a party later?', 'Sure, I would love to go!', 'You should ask the other pigs too', 'See you at the party!']);
     hammy.partyLocation = {x: 23040, y: 290};
 
     bacon = physics.add.sprite(0, 0, 'animals_2');
+    bacon.sounds = hammy.sounds;
     register('Bacon', bacon, ANIMAL_LOCATIONS.bacon, true, ['Oh hi hi!', 'A party? Up the hill?', 'Oh, and it starts soon?', 'I can\'t wait to go!', 'I\'ll see you there Porkbelly!']);
     bacon.partyLocation = {x: 23088, y: 290};
 
     porkchop = physics.add.sprite(0, 0, 'animals_2');
+    porkchop.sounds = bacon.sounds;
     register('Porkchop', porkchop, ANIMAL_LOCATIONS.porkchop, true, ['Hello Porkbelly!', 'I would love to go to a party, when is it?', 'Oh okay, I can go later today!', 'Thanks for the invite Porkbelly!']);
     porkchop.partyLocation = {x: 23190, y: 290};
 
     pika = physics.add.sprite(0, 0, 'animals_2');
+    pika.sounds = fox.sounds;
     register('Pika', pika, ANIMAL_LOCATIONS.pika, true, ['*woof* thank you for rescuing me! *woof*']);
     pika.partyLocation = {x: 23133, y: 290};
 
@@ -210,28 +261,43 @@ function create() {
     }
 
     // create interaction zones
-    createZoneInteraction(2000, 720, 50, () => setStageText('Stage 1: The Forest'));
-    createZoneInteraction(6500, 900, 50, () => setStageText('Stage 2: The Caves'));
-    createZoneInteraction(12100, 700, 50, () => setStageText('Stage 3: The Desert'));
-    createZoneInteraction(16300, 730, 50, () => setStageText('Stage 4: The Plains'));
+    createZoneInteraction(2000, 720, 50, () => {
+        setStageText('Stage 1: The Forest');
+        setTrack(SOUNDS.forest);
+    });
+    createZoneInteraction(6500, 900, 50, () => {
+        setStageText('Stage 2: The Caves');
+        setTrack(SOUNDS.cave);
+    });
+    createZoneInteraction(12100, 700, 50, () => {
+        setStageText('Stage 3: The Desert');
+        setTrack(SOUNDS.desert);
+    });
+    createZoneInteraction(16300, 730, 50, () => {
+        setStageText('Stage 4: The Plains');
+        setTrack(SOUNDS.plains);
+    });
 
     createZoneInteraction(6130, 827, 100, player => {
-        setMainText('Stage  1  Complete!')
+        setMainText('Stage  1  Complete!');
         for (let i = 0; i < 20; i++) {
             this.time.delayedCall(i * 250, () => spawnFirework(player.x + (Math.random() * 150) - 75, player.y - Math.random() * 100), [], this);
         }
+        SOUNDS.stage_complete.play();
     });
     createZoneInteraction(11500, 730, 100, player => {
-        setMainText('Stage  2  Complete!')
+        setMainText('Stage  2  Complete!');
         for (let i = 0; i < 20; i++) {
             this.time.delayedCall(i * 250, () => spawnFirework(player.x + (Math.random() * 150) - 75, player.y - Math.random() * 100), [], this);
         }
+        SOUNDS.stage_complete.play();
     });
     createZoneInteraction(16000, 707, 100, player => {
-        setMainText('Stage  3  Complete!')
+        setMainText('Stage  3  Complete!');
         for (let i = 0; i < 20; i++) {
             this.time.delayedCall(i * 250, () => spawnFirework(player.x + (Math.random() * 150) - 75, player.y - Math.random() * 100), [], this);
         }
+        SOUNDS.stage_complete.play();
     });
 
     createZoneInteraction(22400, 467, 200, () => {
@@ -243,6 +309,8 @@ function create() {
     });
 
     createZoneInteraction(23250, 300, 200, () => {
+        musictrack.stop();
+        SOUNDS.party.play();
         setMainText('Happy birthday bby!');
         INVITED.forEach(animal => {
             self.time.delayedCall(Math.random() * 1000, () => {
@@ -344,11 +412,14 @@ function create() {
                     setStageText(`Move closer to talk to ${name}`);
                     return;
                 }
-                sprite.dialogueText.setVisible(true);
-
                 if (dialogue.length <= 0) {
                     return;
                 }
+
+                sprite.dialogueText.setVisible(true);
+
+                const sound = sprite.sounds[Math.floor(Math.random() * sprite.sounds.length)];
+                sound.play();
 
                 const nextLine = dialogue.shift();
                 sprite.dialogueText.setText(nextLine);
@@ -372,6 +443,28 @@ function create() {
         const firework = self.add.sprite(x, y, 'firework_spritesheet');
         firework.anims.play('firework_anim', false);
         firework.on('animationcomplete', () => firework.destroy());
+        SOUNDS.firework.play();
+    }
+
+    function setTrack(soundtrack) {
+        if (musictrack) {
+            self.tweens.add({
+                targets: musictrack,
+                volume: 0,
+                duration: 2000,
+                onComplete: () => {
+                    musictrack.stop();
+                    startTrack(soundtrack);
+                }
+            });
+        } else {
+            startTrack(soundtrack);
+        }
+
+        function startTrack(track) {
+            musictrack = track;
+            musictrack.play();
+        }
     }
 }
 
@@ -418,6 +511,7 @@ function collectCoin(sprite, tile) {
     coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
     score++; // add 10 points to the score
     scoreText.setText(`SCORE:  ${score}`); // set the scoreText to show the current score
+    SOUNDS.tulip.play();
     return false;
 }
 
@@ -471,6 +565,7 @@ function setMainText(text) {
 }
 
 let lastTimeOnFloor = false;
+let lastPlayedStep = false;
 function update(time, delta) {
     const self = this;
     // parallaxLayer.setPosition(this.cameras.main.scrollX * 0.9 + 120, this.cameras.main.scrollY * 0.9 + 60);
@@ -507,6 +602,17 @@ function update(time, delta) {
     }
     if (animation) {
         player.anims.play(animation, true);
+    }
+
+    // footsteps audio logic
+    if (!lastPlayedStep) {
+        lastPlayedStep = time;
+    }
+    if (animation === 'walk' && time - lastPlayedStep >= FOOTSTEP_THRESHOLD) {
+        lastPlayedStep = time;
+        const steps = [ SOUNDS.step1, SOUNDS.step2, SOUNDS.step3, SOUNDS.step4 ];
+        const random = steps[Math.floor(Math.random() * steps.length)];
+        random.play();
     }
 
     // catch, in case player falls
