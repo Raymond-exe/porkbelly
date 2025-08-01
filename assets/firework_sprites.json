@@ -1,0 +1,140 @@
+{
+    "frames": [
+        {
+            "filename": "firework_0",
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 40
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 40
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 40
+            }
+        },
+        {
+            "filename": "firework_1",
+            "frame": {
+                "x": 0,
+                "y": 41,
+                "w": 40,
+                "h": 40
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 40
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 40
+            }
+        },
+        {
+            "filename": "firework_3",
+            "frame": {
+                "x": 41,
+                "y": 0,
+                "w": 40,
+                "h": 40
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 40
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 40
+            }
+        },
+        {
+            "filename": "firework_4",
+            "frame": {
+                "x": 41,
+                "y": 41,
+                "w": 40,
+                "h": 40
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 40
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 40
+            }
+        },
+        {
+            "filename": "firework_2",
+            "frame": {
+                "x": 0,
+                "y": 82,
+                "w": 40,
+                "h": 40
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 40
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 40
+            }
+        },
+        {
+            "filename": "firework_5",
+            "frame": {
+                "x": 41,
+                "y": 82,
+                "w": 40,
+                "h": 40
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 40,
+                "h": 40
+            },
+            "sourceSize": {
+                "w": 40,
+                "h": 40
+            }
+        }
+    ],
+    "meta": {
+        "app": "https://www.leshylabs.com/apps/sstool/",
+        "version": "Leshy SpriteSheet Tool v0.8.4",
+        "image": "firework_spritesheet.png",
+        "size": {
+            "w": 81,
+            "h": 122
+        },
+        "scale": 1
+    }
+}

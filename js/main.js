@@ -71,6 +71,7 @@ function preload() {
     this.load.atlas('player', 'assets/player.png', 'assets/player.json');
     this.load.atlas('animals', 'assets/animals_sprites.png', 'assets/animals_sprites.json');
     this.load.atlas('animals_2', 'assets/animals_sprites_2.png', 'assets/animals_sprites_2.json');
+    this.load.atlas('firework_spritesheet', 'assets/firework_spritesheet.png', 'assets/firework_sprites.json')
 }
 
 function preloadHud() {
@@ -87,7 +88,7 @@ function create() {
     map = this.make.tilemap({key: 'map'});
 
     // tiles for the ground layer
-    let groundTiles = map.addTilesetImage('spritesheet');
+    const groundTiles = map.addTilesetImage('spritesheet');
 
     // parallaxLayer = map.createDynamicLayer('Parallax', groundTiles, 150, 60);
     // parallaxLayer.setScale(1.5 * 0.9);
@@ -175,6 +176,11 @@ function create() {
         frames: this.anims.generateFrameNames('animals', {prefix: 'ghast_', start: 0, end: 9, zeroPad: 2}),
         frameRate: 10,
     });
+    this.anims.create({
+        key: 'firework_anim',
+        frames: this.anims.generateFrameNames('firework_spritesheet', {prefix: 'firework_', start: 0, end: 5, zeroPad: 1}),
+        frameRate: 10,
+    });
     ['pika', 'hammy', 'porkchop', 'bacon'].forEach(name => {
         this.anims.create({
             key: name,
@@ -196,7 +202,7 @@ function create() {
     // this.cameras.main.setBounds(0, 0, 10, 10);
     this.cameras.main.setZoom(3);
     // make the camera follow the player
-    this.cameras.main.startFollow(player, true, 0.05, 0.05, 0, 30);
+    this.cameras.main.startFollow(player, true, 0.05, 0.05, 0, 20);
 
     // set background color, so the sky is not black    
     this.cameras.main.setBackgroundColor('#78A7FF');
@@ -304,6 +310,7 @@ function collectCoin(sprite, tile) {
 
 let lastTimeOnFloor = false;
 function update(time, delta) {
+    const self = this;
     // parallaxLayer.setPosition(this.cameras.main.scrollX * 0.9 + 120, this.cameras.main.scrollY * 0.9 + 60);
 
     let animation = false;
@@ -326,7 +333,6 @@ function update(time, delta) {
     if ((key.w.isDown || key.space.isDown || cursors.up.isDown) && player.body.onFloor())
     {
         player.body.setVelocityY(-JUMP_IMPULSE);
-        console.log(`Position: (${Math.round(player.x)}, ${Math.round(player.y)})`);
     }
     if (player.body.onFloor()) {
         lastTimeOnFloor = time;
@@ -353,6 +359,13 @@ function update(time, delta) {
     pika.anims.play('pika', false);
 
     UPDATE_CALLBACKS.forEach(callback => callback());
+
+
+    function spawnFirework(x, y) {
+        const firework = self.add.sprite(x, y, 'firework_spritesheet');
+        firework.anims.play('firework_anim', false);
+        firework.on('animationcomplete', () => firework.destroy());
+    }
 }
 
 function updateHud(time, delta) {
