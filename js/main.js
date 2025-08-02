@@ -150,9 +150,28 @@ function preloadHud() {
 
 }
 
+function resize() {
+    const canvas = game.canvas
+    const width = window.innerWidth
+    const height = window.innerHeight;
+    const wratio = width / height;
+    const ratio = canvas.width / canvas.height;
+
+    if (wratio < ratio) {
+        canvas.style.width = width + "px";
+        canvas.style.height = (width / ratio) + "px";
+    } else {
+        canvas.style.width = (height * ratio) + "px";
+        canvas.style.height = height + "px";
+    }
+}
+
 function create() {
     const self = this;
     const physics = self.physics;
+
+    window.addEventListener('resize', resize);
+    resize();
 
     this.scene.launch('hud');
 
