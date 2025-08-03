@@ -665,7 +665,7 @@ function update(time, delta) {
     const self = this;
     const pointer = this.input.activePointer;
 
-    if (pointer.pointerType === 'touch') {
+    if (pointer.wasTouch) {
         touchscreen = true;
     }
 
