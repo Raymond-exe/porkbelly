@@ -660,19 +660,28 @@ function showCredits() {
 
 let lastTimeOnFloor = false;
 let lastPlayedStep = false;
+let touchscreen = false;
 function update(time, delta) {
     const self = this;
-    // parallaxLayer.setPosition(this.cameras.main.scrollX * 0.9 + 120, this.cameras.main.scrollY * 0.9 + 60);
+    const pointer = this.input.activePointer;
+
+    if (pointer.pointerType === 'touch') {
+        touchscreen = true;
+    }
+
+    const left = touchscreen ? (pointer.isDown && pointer.x < self.scale.width / 2) : (key.a.isDown || cursors.left.isDown);
+    const right = touchscreen ? (pointer.isDown && pointer.x >= self.scale.width / 2) : (key.d.isDown || cursors.right.isDown);
+    const jump = touchscreen ? (pointer.isDown && pointer.y < self.scale.height / 2) : (key.w.isDown || key.space.isDown || cursors.up.isDown);
 
     let animation = false;
     // L/R movement
-    if (key.a.isDown || cursors.left.isDown)
+    if (left)
     {
         player.body.setVelocityX(-WALK_SPEED);
         animation = 'walk';
         player.flipX = true; // flip the sprite to the left
     }
-    else if (key.d.isDown || cursors.right.isDown)
+    else if (right)
     {
         player.body.setVelocityX(WALK_SPEED);
         animation = 'walk';
@@ -682,8 +691,7 @@ function update(time, delta) {
         animation = 'idle';
     }
     // jump 
-    if ((key.w.isDown || key.space.isDown || cursors.up.isDown) && player.body.onFloor())
-    {
+    if (jump && player.body.onFloor()) {
         player.body.setVelocityY(-JUMP_IMPULSE);
     }
 
