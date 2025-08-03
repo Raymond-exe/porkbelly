@@ -173,6 +173,11 @@ function create() {
     window.addEventListener('resize', resize);
     resize();
 
+    self.input.on('pointerdown', (pointer) => {
+        window.focus();
+        pointer.event.preventDefault();
+    });
+
     this.scene.launch('hud');
 
     // load the map 
